@@ -1,2 +1,5 @@
 .DS_Store
 .ipynb_checkpoints
+将删除 .idea/
+将删除 mydemo/__pycache__/
+将删除 mydemo/randomData/__pycache__/
