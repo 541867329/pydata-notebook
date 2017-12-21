@@ -92,6 +92,3 @@ normed_subset = count_subset.div(count_subset.sum(1), axis=0)
 # plt.show()
 
 
-unames = ['user_id', 'gender', 'age', 'occupation', 'zip']
-users=pd.read_table('../datasets/movielens/users.dat',sep='::',header=None,names=unames,encoding='utf-8',engine='python')
-print(users[:10])
