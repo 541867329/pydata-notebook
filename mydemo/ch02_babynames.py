@@ -21,7 +21,7 @@ names = pd.concat(pieces, ignore_index=True)
 total_births = names.pivot_table('numbers', index='year', columns='sex', aggfunc=sum)
 from matplotlib import pyplot as plt
 
-total_births.plot(title='Total births by sex and year')
+# total_births.plot(title='Total births by sex and year')
 
 '''根据1列新增一列'''
 # names['aaa'] = names['year'].map(lambda x: 0 if x> 1880 else 1)
@@ -44,12 +44,19 @@ def add_prop(group):
 names = names.groupby(['year', 'sex']).apply(add_prop)
 '''n1和n2都是为了验证分组总和是否为1'''
 n1 = np.allclose(names.groupby(['year', 'sex'])['prop'].sum(), 1)
-n2 = names.groupby(['year','sex'])['prop'].sum()
+n2 = names.groupby(['year', 'sex'])['prop'].sum()
+
 
 def get_top1000(group):
-    top1000=group.sort_values(by='numbers',ascending=False)[:1000]
+    top1000 = group.sort_values(by='numbers', ascending=False)[:1000]
     return top1000
 
-grouped=names.groupby(['year','sex'])
-top1000=grouped.apply(get_top1000)
 
+grouped = names.groupby(['year', 'sex'])
+top1000 = grouped.apply(get_top1000)
+
+boys = top1000[top1000['sex'] == 'M']
+girls = top1000[top1000['sex'] == 'F']
+
+total_births=top1000.pivot_table('numbers',index='year',columns='names',aggfunc=sum)
+subset=total_births[['John','Harry','Mary','Marilyn']]
