@@ -91,8 +91,22 @@ names['last_letters'] = last_letters
 table = names.pivot_table('numbers', index='last_letters', columns=['sex', 'year'], aggfunc=sum)
 subtable = table.reindex(columns=[1910, 1960, 2010], level='year').fillna(0)  # level主要在多层索引上用到
 letter_prop = subtable / subtable.sum()
-fig, axes = plt.subplots(2, 1, figsize=(10, 8))
-letter_prop['M'].plot(kind='bar', rot=0, ax=axes[0], title='Male')
-letter_prop['F'].plot(kind='bar', rot=0, ax=axes[1], title='Female')
+# fig, axes = plt.subplots(2, 1, figsize=(10, 8))
+# letter_prop['M'].plot(kind='bar', rot=0, ax=axes[0], title='Male')
+# letter_prop['F'].plot(kind='bar', rot=0, ax=axes[1], title='Female')
+# plt.show()
 
-plt.show()
+letter_prop = table / table.sum()
+dny_ts = letter_prop.ix[['d', 'n', 'y'], 'M'].T  # 生成时间序列
+# dny_ts.plot()
+# plt.show()
+
+all_names = top1000.names.unique()
+mask = np.array(['lesl' in x.lower() for x in all_names])  # 返回true和false,all_names[True]显示
+leslkey_like = all_names[mask]
+filtered = top1000[top1000.names.isin(leslkey_like)]
+table = filtered.pivot_table('numbers', index='year', columns='sex', aggfunc=sum)
+table = table.div(table.sum(1), axis=0)  # DataFrame.div(other, axis='columns', level=None, fill_value=None)[source]
+# df.sum(1) 横轴相加， df.sum(0)纵轴相加，df.div()每个元素除以df.sum()的值
+# table.plot(style={'M': 'k-', 'F': 'k--'})
+# plt.show()
